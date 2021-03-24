@@ -15,7 +15,7 @@ class MyService : Service() {
 
 class MyStub:Binder(), MyAidl {
     init {
-        this.attachInterface(this, "wodetianya")
+        this.attachInterface(this, "com.jaycema.binderdemo.IMyAidlInterface")
     }
 
     override fun my(query: String): String {
@@ -29,11 +29,11 @@ class MyStub:Binder(), MyAidl {
     override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
         when(code) {
             INTERFACE_TRANSACTION -> {
-                reply?.writeString("wodetianya")
+                reply?.writeString("com.jaycema.binderdemo.IMyAidlInterface")
                 return true
             }
             FIRST_CALL_TRANSACTION -> {
-                data.enforceInterface("wodetianya")
+                data.enforceInterface("com.jaycema.binderdemo.IMyAidlInterface")
                 val s = data.readString()?: ""
                 reply?.writeNoException()
                 reply?.writeString(my(s))
@@ -46,7 +46,7 @@ class MyStub:Binder(), MyAidl {
 
     companion object {
         fun asInterface(iBinder: IBinder):MyAidl {
-            val local = iBinder.queryLocalInterface("wodetianya")
+            val local = iBinder.queryLocalInterface("com.jaycema.binderdemo.IMyAidlInterface")
             if (local != null) {
                 return local as MyAidl
             }
@@ -61,7 +61,7 @@ class Proxy(val mRemote: IBinder) :MyAidl {
         val data = Parcel.obtain()
         val reply = Parcel.obtain()
         try {
-            data.writeInterfaceToken("wodetianya")
+            data.writeInterfaceToken("com.jaycema.binderdemo.IMyAidlInterface")
             data.writeString(query)
             mRemote.transact(Binder.FIRST_CALL_TRANSACTION, data, reply, 0)
             reply.readException()

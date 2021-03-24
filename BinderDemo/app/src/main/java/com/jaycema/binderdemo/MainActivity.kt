@@ -24,14 +24,14 @@ class MainActivity : AppCompatActivity() {
         val rwLock = ReentrantReadWriteLock()
         rwLock.readLock().lock()
 
-/*
+
         bindService(
             Intent(MainActivity@ this, RemoteService::class.java),
             object : ServiceConnection {
                 override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                     Log.i("mainAct", "onServiceConnected name $name, service $service")
                     val mybinder = IMyAidlInterface.Stub.asInterface(service)
-                    tv.setText(mybinder.basicTypes(1, 2, false, 0.1f, 2.0, "xxx"))
+                    Log.i("mainAct", "RemoteService ${mybinder.basicTypes(1, 2, false, 0.1f, 2.0, "xxx")}")
                 }
 
                 override fun onServiceDisconnected(name: ComponentName?) {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
             },
             BIND_AUTO_CREATE
-        )*/
+        )
 
         bindService(
             Intent(MainActivity@ this, MyService::class.java),
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                     Log.i("mainAct", "onServiceConnected name $name, service $service")
                     val mybinder1 = service?.let { MyStub.asInterface(it) }
-                    tv.setText(mybinder1?.my("11111"))
+                    Log.i("mainAct", "myservice ${mybinder1?.my("1111")}")
                 }
 
                 override fun onServiceDisconnected(name: ComponentName?) {
